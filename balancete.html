@@ -4,13 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Balancete</title>
+  <link rel="icon" type="image/png" href="public/favicon.jpg">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body onload="updateMonth()">
 
-  <h1>Faculdade IBADEB - Balancete - Mês de <span id="currentMonth"></span></h1>
+  <div class="header">
+    <img src="public/ibadeb.png" alt="Logo IBADEB" class="logo">
+    <h1>Faculdade IBADEB - Balancete - Mês de <span id="currentMonth"></span></h1>
+  </div>
 
   <h3>CADASTRO DE ALUNOS</h3>
   <table id="tabelaAlunos">
@@ -57,6 +61,10 @@
     <button onclick="exportToExcel()">Exportar para Excel</button>
     <button onclick="gerarPDF()">Gerar PDF</button>
   </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 Balancete - Todos os direitos reservados</p>
+  </footer>
 
   <script src="js/main.js"></script>
 
