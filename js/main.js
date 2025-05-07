@@ -27,6 +27,20 @@ function updateMonth() {
     months[currentDate.getMonth()];
 }
 
+function excluirLinha(button) {
+  const row = button.parentNode.parentNode;
+  const table = row.parentNode;
+
+  // Não permite excluir se for a única linha da tabela
+  if (table.rows.length > 2) {
+    row.remove();
+    calcularTotais(); // Atualiza os totais após excluir
+  } else {
+    alert('Não é possível excluir a última linha da tabela!');
+  }
+}
+
+// Modificar as funções adicionarAluno e adicionarDespesa para incluir o botão de excluir
 function adicionarAluno() {
   try {
     const tabela = document.getElementById("tabelaAlunos");
@@ -35,6 +49,7 @@ function adicionarAluno() {
     novaLinha.innerHTML = `
             <td><input type="text" name="alunoNome[]" onchange="this.value = this.value.toUpperCase()" /></td>
             <td><input type="number" name="alunoValor[]" step="0.01" min="0" oninput="calcularTotais()" /></td>
+            <td><button onclick="excluirLinha(this)" class="btn-excluir">Excluir</button></td>
         `;
 
     calcularTotais();
@@ -52,6 +67,7 @@ function adicionarDespesa() {
     novaLinha.innerHTML = `
             <td><input type="text" name="despesaDescricao[]" onchange="this.value = this.value.toUpperCase()" /></td>
             <td><input type="number" name="despesaValor[]" step="0.01" min="0" oninput="calcularTotais()" /></td>
+            <td><button onclick="excluirLinha(this)" class="btn-excluir">Excluir</button></td>
         `;
 
     calcularTotais();
@@ -390,6 +406,7 @@ function carregarDados() {
       novaLinha.innerHTML = `
                 <td><input type="text" name="alunoNome[]" value="${aluno.nome}" onchange="this.value = this.value.toUpperCase()" /></td>
                 <td><input type="number" name="alunoValor[]" value="${aluno.valor}" step="0.01" min="0" oninput="calcularTotais()" /></td>
+                <td><button onclick="excluirLinha(this)" class="btn-excluir">Excluir</button></td>
             `;
     });
 
@@ -399,6 +416,7 @@ function carregarDados() {
       novaLinha.innerHTML = `
                 <td><input type="text" name="despesaDescricao[]" value="${despesa.descricao}" onchange="this.value = this.value.toUpperCase()" /></td>
                 <td><input type="number" name="despesaValor[]" value="${despesa.valor}" step="0.01" min="0" oninput="calcularTotais()" /></td>
+                <td><button onclick="excluirLinha(this)" class="btn-excluir">Excluir</button></td>
             `;
     });
 

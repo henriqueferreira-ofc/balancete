@@ -143,3 +143,16 @@ button:hover {
 .footer p {
   margin: 0;
 }
+
+.btn-excluir {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-excluir:hover {
+  background-color: #cc0000;
+}

@@ -21,10 +21,12 @@
     <tr>
       <th>Nome do Aluno</th>
       <th>Valor Pago (R$)</th>
+      <th>Ação</th>
     </tr>
     <tr>
       <td><input type="text" name="alunoNome[]" onchange="this.value = this.value.toUpperCase()" /></td>
       <td><input type="number" name="alunoValor[]" oninput="calcularTotais()" /></td>
+      <td><button onclick="excluirLinha(this)" class="btn-excluir">Excluir</button></td>
     </tr>
   </table>
 
@@ -37,10 +39,12 @@
     <tr>
       <th>Descrição da Despesa</th>
       <th>Valor (R$)</th>
+      <th>Ação</th>
     </tr>
     <tr>
       <td><input type="text" name="despesaDescricao[]" onchange="this.value = this.value.toUpperCase()" /></td>
       <td><input type="number" name="despesaValor[]" oninput="calcularTotais()" /></td>
+      <td><button onclick="excluirLinha(this)" class="btn-excluir">Excluir</button></td>
     </tr>
   </table>
 
