@@ -265,9 +265,9 @@ async function gerarPDF() {
     // Resto do conteúdo começando mais abaixo
     // Tabela de Alunos
     doc.setFont("helvetica", "bold");
-    doc.text("CADASTRO DE ALUNOS", 10, headerY + 20);
+    doc.text("CADASTRO DE ALUNOS", 10, headerY + 25);
 
-    let yPos = headerY + 30;
+    let yPos = headerY + 40;
     doc.setFontSize(10);
     doc.text("NOME DO ALUNO", 10, yPos);
     doc.text("Valor (R$)", 150, yPos);
