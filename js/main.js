@@ -36,7 +36,7 @@ function excluirLinha(button) {
     row.remove();
     calcularTotais(); // Atualiza os totais após excluir
   } else {
-    alert('Não é possível excluir a última linha da tabela!');
+    alert("Não é possível excluir a última linha da tabela!");
   }
 }
 
@@ -222,102 +222,118 @@ function exportToExcel() {
   }
 }
 
-function gerarPDF() {
+async function gerarPDF() {
   try {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    const mesAtual = document.getElementById("currentMonth").textContent;
 
-    // Configurações
-    doc.setFont("helvetica");
-    doc.setFontSize(16);
+    // Carregar a logo
+    const logo = new Image();
+    logo.src = "public/ibadeb.png";
 
-    // Título em negrito
+    await new Promise((resolve, reject) => {
+      logo.onload = resolve;
+      logo.onerror = reject;
+    });
+
+    // Configurações do título
+    const pageWidth = doc.internal.pageSize.width;
+    const logoWidth = 25;
+    const logoHeight = 15;
+
+    // Posição y do cabeçalho (um pouco mais abaixo)
+    const headerY = 25;
+
+    // Calcular posição x da logo para centralizar
+    const title = `Faculdade IBADEB - Balancete - Mês de ${
+      document.getElementById("currentMonth").textContent
+    }`;
     doc.setFont("helvetica", "bold");
-    doc.text(
-      `FACULDADE IBADEB - BALANCETE - MÊS DE ${mesAtual.toUpperCase()}`,
-      105,
-      20,
-      {
-        align: "center"
-      }
-    );
-    doc.setFont("helvetica", "normal");
+    doc.setFontSize(15);
+    const titleWidth =
+      (doc.getStringUnitWidth(title) * doc.internal.getFontSize()) /
+      doc.internal.scaleFactor;
+    const totalWidth = logoWidth + 5 + titleWidth; // 5 é o espaço entre logo e texto
+    const startX = (pageWidth - totalWidth) / 2;
 
-    let y = 40;
+    // Adicionar a logo
+    doc.addImage(logo, "PNG", startX, headerY - 10, logoWidth, logoHeight);
 
-    // Lista de Alunos
+    // Adicionar o título
+    doc.text(title, startX + logoWidth + 5, headerY);
+
+    // Resto do conteúdo começando mais abaixo
+    // Tabela de Alunos
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
-    doc.text("ALUNOS E VALORES PAGOS:", 20, y);
-    doc.setFont("helvetica", "normal");
-    y += 10;
+    doc.text("CADASTRO DE ALUNOS", 10, headerY + 20);
 
-    const nomes = document.getElementsByName("alunoNome[]");
-    const valores = document.getElementsByName("alunoValor[]");
+    let yPos = headerY + 30;
+    doc.setFontSize(10);
+    doc.text("NOME DO ALUNO", 10, yPos);
+    doc.text("Valor (R$)", 150, yPos);
 
-    doc.setFontSize(12);
-    for (let i = 0; i < nomes.length; i++) {
-      if (nomes[i].value) {
-        doc.text(`${nomes[i].value}: R$ ${valores[i].value || "0.00"}`, 30, y);
-        y += 8;
+    const alunosNomes = document.getElementsByName("alunoNome[]");
+    const alunosValores = document.getElementsByName("alunoValor[]");
+
+    yPos += 10;
+    for (let i = 0; i < alunosNomes.length; i++) {
+      if (alunosNomes[i].value) {
+        doc.text(alunosNomes[i].value, 10, yPos);
+        doc.text(alunosValores[i].value || "0.00", 150, yPos);
+        yPos += 8;
       }
     }
 
-    // Lista de Despesas
-    y += 10;
+    // Tabela de Despesas
+    yPos += 10;
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
-    doc.text("DESPESAS:", 20, y);
-    doc.setFont("helvetica", "normal");
-    y += 10;
-
-    const descricoes = document.getElementsByName("despesaDescricao[]");
-    const valoresDespesa = document.getElementsByName("despesaValor[]");
-
     doc.setFontSize(12);
-    for (let i = 0; i < descricoes.length; i++) {
-      if (descricoes[i].value) {
-        doc.text(
-          `${descricoes[i].value}: R$ ${valoresDespesa[i].value || "0.00"}`,
-          30,
-          y
-        );
-        y += 8;
+    doc.text("DESPESAS GERAIS", 10, yPos);
+
+    yPos += 10;
+    doc.setFontSize(10);
+    doc.text("DECRIÇÃO", 10, yPos);
+    doc.text("Valor (R$)", 150, yPos);
+
+    const despesasDesc = document.getElementsByName("despesaDescricao[]");
+    const despesasValores = document.getElementsByName("despesaValor[]");
+
+    yPos += 10;
+    for (let i = 0; i < despesasDesc.length; i++) {
+      if (despesasDesc[i].value) {
+        doc.text(despesasDesc[i].value, 10, yPos);
+        doc.text(despesasValores[i].value || "0.00", 150, yPos);
+        yPos += 8;
       }
     }
 
     // Totais
-    y += 15;
+    yPos += 10;
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
-    doc.text("RESUMO:", 20, y);
-    doc.setFont("helvetica", "normal");
-    y += 10;
     doc.text(
       `Entradas: R$ ${document.getElementById("totalEntradas").textContent}`,
-      30,
-      y
+      10,
+      yPos
     );
-    y += 8;
+    yPos += 8;
     doc.text(
       `Despesas: R$ ${document.getElementById("totalDespesas").textContent}`,
-      30,
-      y
+      10,
+      yPos
     );
-    y += 8;
+    yPos += 8;
     doc.text(
       `Saldo: R$ ${document.getElementById("totalReceita").textContent}`,
-      30,
-      y
+      10,
+      yPos
     );
 
-    // Salvar PDF
-    doc.save(`balancete_${mesAtual.toLowerCase()}.pdf`);
-
-    console.log("PDF gerado com sucesso");
-  } catch (erro) {
-    console.error("Erro ao gerar PDF:", erro);
+    // Salvar o PDF
+    doc.save(
+      `balancete-${document.getElementById("currentMonth").textContent}.pdf`
+    );
+  } catch (error) {
+    console.error("Erro ao gerar PDF:", error);
     alert("Erro ao gerar PDF!");
   }
 }
