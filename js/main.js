@@ -292,7 +292,7 @@ async function gerarPDF() {
 
     yPos += 10;
     doc.setFontSize(10);
-    doc.text("DECRIÇÃO", 10, yPos);
+    doc.text("DESCRIÇÃO", 10, yPos);
     doc.text("Valor (R$)", 150, yPos);
 
     const despesasDesc = document.getElementsByName("despesaDescricao[]");
