@@ -84,6 +84,5 @@ Para suporte ou dúvidas, entre em contato com a equipe de desenvolvimento:
 
 💼 [LinkedIn](https://www.linkedin.com/in/henriqueferreira-ofc/)
 
-
 ---
 Desenvolvido com ❤️ para IBADEB.
