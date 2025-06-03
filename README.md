@@ -86,4 +86,4 @@ Para suporte ou dúvidas, entre em contato com a equipe de desenvolvimento:
 
 
 ---
-Desenvolvido com ❤️ para JML-Pescados 
+Desenvolvido com ❤️ para IBADEB. 
